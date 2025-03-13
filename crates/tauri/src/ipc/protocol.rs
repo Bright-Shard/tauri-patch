@@ -496,7 +496,8 @@ fn parse_invoke_request<R: Runtime>(
       .to_str()
       .map_err(|_| "Origin header value must be a string")?,
   )
-  .map_err(|_| "Origin header is not a valid URL")?;
+  .map_err(|_| "Origin header is not a valid URL")?
+  .unwrap_or_else(|_| Url::parse("https://localhost").unwrap());
 
   let callback = CallbackFn(
     parts
